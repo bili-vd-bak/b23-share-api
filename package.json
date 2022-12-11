@@ -1,0 +1,24 @@
+{
+	"scripts": {
+		"predev": "rm -rf api/* && ncc build src/api/graphql.ts -o api && mv api/index.js api/graphql.js",
+		"prod": "rm -rf api/* && ncc build src/api/graphql.ts -o api && mv api/index.js api/graphql.js && vercel --prod"
+	},
+	"dependencies": {
+		"@beetcb/sstore": "^0.3.0",
+		"@graphql-ez/plugin-schema": "^0.8.5",
+		"@graphql-ez/vercel": "^0.1.3",
+		"@octokit/core": "^4.0.5",
+		"graphql": "^16.6.0",
+		"graphql-ez": "^0.15.1",
+		"node-fetch": "2"
+	},
+	"devDependencies": {
+		"@octokit/types": "^7.5.1",
+		"@types/node": "^18.7.20",
+		"@types/node-fetch": "2",
+		"@vercel/ncc": "^0.36.0",
+		"@vercel/node": "^2.5.18",
+		"typescript": "^4.9.4"
+	},
+	"license": "GPL-3.0"
+}
