@@ -1,8 +1,8 @@
-import { VercelContextArgs, InferContext } from '@graphql-ez/vercel';
+import { VercelContextArgs, InferContext } from "@graphql-ez/vercel";
 declare function buildContext({ req, vercel }: VercelContextArgs): {
     foo: string;
 };
-declare module 'graphql-ez' {
+declare module "graphql-ez" {
     interface EZContext extends InferContext<typeof buildContext> {
     }
 }

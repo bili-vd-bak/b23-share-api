@@ -30616,7 +30616,7 @@ function buildContext({ req, vercel }) {
     // VercelRequest
     vercel.req;
     return {
-        foo: 'bar',
+        foo: "bar",
     };
 }
 const ezApp = CreateApp({
@@ -30629,6 +30629,7 @@ const ezApp = CreateApp({
             }),
         ],
     },
+    cors: true,
     envelop: {
         plugins: [
         // Envelop Plugins
