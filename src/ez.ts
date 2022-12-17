@@ -1,6 +1,6 @@
-import { CreateApp, VercelContextArgs, InferContext } from '@graphql-ez/vercel';
-import { ezSchema, EZSchema, gql } from '@graphql-ez/plugin-schema';
-import schema from './schema';
+import { CreateApp, VercelContextArgs, InferContext } from "@graphql-ez/vercel";
+import { ezSchema, EZSchema, gql } from "@graphql-ez/plugin-schema";
+import schema from "./schema";
 
 function buildContext({ req, vercel }: VercelContextArgs) {
   // IncomingMessage
@@ -10,13 +10,13 @@ function buildContext({ req, vercel }: VercelContextArgs) {
   vercel.req;
 
   return {
-    foo: 'bar',
+    foo: "bar",
   };
 }
 
 // This snippet allows you to infer the context returned by your 'buildContext' and add it to the EZContext interface
-declare module 'graphql-ez' {
-  interface EZContext extends InferContext<typeof buildContext> { }
+declare module "graphql-ez" {
+  interface EZContext extends InferContext<typeof buildContext> {}
 }
 
 export const ezApp = CreateApp({
@@ -29,6 +29,7 @@ export const ezApp = CreateApp({
       }),
     ],
   },
+  cors: true,
   envelop: {
     plugins: [
       // Envelop Plugins
