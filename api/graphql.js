@@ -30475,7 +30475,7 @@ async function onedrive_item({ drive = "", path = "", nextPageToken = "", }) {
             data = await getItem(i[3], path, "", access_token);
             data = DataHandler(data);
         }
-        if (!!data == false)
+        if (!data)
             data = { value: [] };
         arr1.push({ sharelink: i[0], folder: data });
     }
@@ -30508,7 +30508,7 @@ async function getRaw(drive_api, path, access_token) {
     });
     return await res.json();
 }
-async function onedrive_raw({ path = "", FileName = "" }) {
+async function onedrive_raw({ path = "", drive = "" }) {
     const access_tokens = await getAccessTokens();
     if (!access_tokens) {
         console.error("access_token is empty.");
@@ -30523,12 +30523,31 @@ async function onedrive_raw({ path = "", FileName = "" }) {
     let arr1 = [];
     for (const i of access_tokens.r) {
         const access_token = i[2];
-        const data = await getRaw(i[3], path + FileName, access_token);
-        if (data["@content.downloadUrl"]) {
-            const downloadUrl = data["@content.downloadUrl"];
-            arr1.push({ sharelink: i[0], dlink: downloadUrl });
+        if (drive) {
+            if (i[0] === drive) {
+                const data = await getRaw(i[3], path, access_token);
+                if (data["@content.downloadUrl"]) {
+                    const downloadUrl = data["@content.downloadUrl"];
+                    arr1.push({ sharelink: i[0], dlink: downloadUrl });
+                }
+            }
+        }
+        else {
+            const data = await getRaw(i[3], path, access_token);
+            if (data["@content.downloadUrl"]) {
+                const downloadUrl = data["@content.downloadUrl"];
+                arr1.push({ sharelink: i[0], dlink: downloadUrl });
+            }
         }
     }
+    if (arr1.length === 0)
+        return {
+            errors: [
+                {
+                    message: "Drive is not available.",
+                },
+            ],
+        };
     return { dlinks: arr1 };
 }
 
@@ -30544,10 +30563,10 @@ const schema = {
     }
     type OD {
       folder(drive: String, nextPageToken: String): OD_folder!
-      raw(FileName: String): OD_raw!
+      raw(drive: String): OD_raw!
     }
     type OD_folder {
-      items: [OD_folder_items]!
+      items: [OD_folder_items]
     }
     type OD_folder_items {
       sharelink: String
@@ -30598,7 +30617,7 @@ const schema = {
             async raw(_root, _args, ctx) {
                 return await onedrive_raw({
                     path: _root.data.path,
-                    FileName: _args.FileName,
+                    drive: _args.drive,
                 });
             },
         },
