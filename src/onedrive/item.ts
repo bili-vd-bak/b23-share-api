@@ -81,7 +81,7 @@ export async function onedrive_item({
       data = await getItem(i[3], path, "", access_token);
       data = DataHandler(data);
     }
-    if (!!data == false) data = { value: [] };
+    if (!data) data = { value: [] };
     arr1.push({ sharelink: i[0], folder: data });
   }
   if (arr1.length === 0)

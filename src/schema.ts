@@ -11,10 +11,10 @@ const schema: EZSchema = {
     }
     type OD {
       folder(drive: String, nextPageToken: String): OD_folder!
-      raw(FileName: String): OD_raw!
+      raw(drive: String): OD_raw!
     }
     type OD_folder {
-      items: [OD_folder_items]!
+      items: [OD_folder_items]
     }
     type OD_folder_items {
       sharelink: String
@@ -65,7 +65,7 @@ const schema: EZSchema = {
       async raw(_root, _args, ctx) {
         return await onedrive_raw({
           path: _root.data.path,
-          FileName: _args.FileName,
+          drive: _args.drive,
         });
       },
     },
