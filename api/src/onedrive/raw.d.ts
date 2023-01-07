@@ -1,6 +1,6 @@
-export declare function onedrive_raw({ path, FileName }: {
+export declare function onedrive_raw({ path, drive }: {
     path?: string | undefined;
-    FileName?: string | undefined;
+    drive?: string | undefined;
 }): Promise<{
     errors: {
         message: string;
