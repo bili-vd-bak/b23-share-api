@@ -21,7 +21,7 @@ async function getRaw(drive_api: string, path: string, access_token: any) {
   return await res.json();
 }
 
-export async function onedrive_raw({ path = "", FileName = "" }) {
+export async function onedrive_raw({ path = "", drive = "" }) {
   const access_tokens = await getAccessTokens();
   if (!access_tokens) {
     console.error("access_token is empty.");
@@ -37,13 +37,29 @@ export async function onedrive_raw({ path = "", FileName = "" }) {
   let arr1 = [];
   for (const i of access_tokens.r) {
     const access_token = i[2];
-
-    const data = await getRaw(i[3], path + FileName, access_token);
-
-    if (data["@content.downloadUrl"]) {
-      const downloadUrl = data["@content.downloadUrl"];
-      arr1.push({ sharelink: i[0], dlink: downloadUrl });
+    if (drive) {
+      if (i[0] === drive) {
+        const data = await getRaw(i[3], path, access_token);
+        if (data["@content.downloadUrl"]) {
+          const downloadUrl = data["@content.downloadUrl"];
+          arr1.push({ sharelink: i[0], dlink: downloadUrl });
+        }
+      }
+    } else {
+      const data = await getRaw(i[3], path, access_token);
+      if (data["@content.downloadUrl"]) {
+        const downloadUrl = data["@content.downloadUrl"];
+        arr1.push({ sharelink: i[0], dlink: downloadUrl });
+      }
     }
   }
+  if (arr1.length === 0)
+    return {
+      errors: [
+        {
+          message: "Drive is not available.",
+        },
+      ],
+    };
   return { dlinks: arr1 };
 }
