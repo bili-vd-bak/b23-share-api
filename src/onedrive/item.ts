@@ -7,7 +7,7 @@ import { getAccessTokens } from "./getAccessToken";
   drive_api = 'https://graph.microsoft.com/v1.0/me/drive',
 } = process.env*/
 
-const top = 20;
+const top = 500;
 
 async function getItem(
   drive_api: string,

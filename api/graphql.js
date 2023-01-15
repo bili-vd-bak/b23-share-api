@@ -30416,7 +30416,7 @@ async function getAccessTokens() {
   top = 500,
   drive_api = 'https://graph.microsoft.com/v1.0/me/drive',
 } = process.env*/
-const item_top = 20;
+const item_top = 500;
 async function getItem(drive_api, path, nextPageToken, access_token) {
     const requestUrl = `${drive_api}${wrapPath(path, "/children")}?select=name,size,lastModifiedDateTime,file,folder&$top=${item_top}` +
         (nextPageToken ? `&$skiptoken=${nextPageToken}` : "");
